@@ -1,3 +1,6 @@
+#include <phoneCodeOscillatorCommon.h>
+
+
   // Key inputs and
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
   // Trinket and Trinket Pro only have 1 hardware interrupt
@@ -31,7 +34,7 @@ unsigned long interToneLockTimer;
 void InitialiseInterruptTrinketPro(){
   cli();    // switch interrupts off while messing with their settings  
   PCICR =0x01;          // Enable PCINT0 interrupt
-  PCMSK1 = 0b00000110;
+  PCMSK0 = 0b00000110;
   sei();    // turn interrupts back on
 }
 
@@ -53,13 +56,15 @@ void playDah() {
   last = dah;
 }
 
-void play(sym) {
+void play(boolean sym) {
   if (sym) {
     playDit();
   } else {
     playDah();
   } 
 }
+
+void pause() {}
 
 void diDah() {
   if (digitalRead(ditPin)==0 && digitalRead(dahPin)==0) {
@@ -69,6 +74,8 @@ void diDah() {
   }
 }
 
+PCOCommon pcoCommon(ditPin, dahPin);
+
 void setup() 
 { 
   // Key inputs and
@@ -76,8 +83,12 @@ void setup()
   // Trinket and Trinket Pro only have 1 hardware interrupt
   // so we will use pin change interrupts for them
  
-  pinMode(ditPin, INPUTPULLUP);
-  pinMode(dahPin, INPUTPULLUP);
+  pinMode(ditPin, INPUT_PULLUP);
+  pinMode(dahPin, INPUT_PULLUP);
+
+    // Check if one of the paddle circuits is closed at startup. This is the signal
+    // to enter configuration mode for either sidetone or code speed.
+  pcoCommon.checkIfConfigure();
 
   InitialiseInterruptTrinketPro();
 
@@ -86,17 +97,19 @@ void setup()
   // will generate an interrupt: but this will 
   //always be the same interrupt routine
 
-  ISR(PCINT0_vect) {    
-  if (iambic) {
-      diDah();
-    } else if {
-      (digitalRead(ditPin)==0)  play(dit);
-    } else if {
-      (digitalRead(dahPin)==0)  play(dah);
-    }
-  }
+
 } 
 
 void loop()
 {
+}
+
+ISR (PCINT0_vect) {    
+  if (iambic) {
+      diDah();
+  } else if (digitalRead(ditPin)==0) { 
+      play(dit);
+  } else if (digitalRead(dahPin)==0) {
+      play(dah);
+  }
 }
