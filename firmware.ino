@@ -1,46 +1,3 @@
-class Oscillator
-{
-  // Class Member Variables
-  // These are initialized at startup
-  int outputPin;      // the number of the output pin
-  long OnTime;     // milliseconds of on-time
-  long Freq;    // frequency of side-tone
- 
-  // These maintain the current state
-  volatile int outputState;                // outputState used to set the output
-  volatile unsigned long previousMillis;    // will store last time output was updated
- 
-  // Constructor - creates a Oscillator 
-  // and initializes the member variables and state
-  public:
-  Oscillator(int pin, long on, long freq)
-  {
-  outputPin = pin;
-  pinMode(outputPin, OUTPUT);     
-    
-  OnTime = on;
-  FreqTime = freq;
-  
-  outputState = LOW; 
-  previousMillis = 0;
-  }
- 
-  void Update(unsigned long currentMillis)
-  {
-    if((outputState == HIGH) && (currentMillis - previousMillis >= OnTime))
-    {
-      outputState = LOW;  // Turn it off
-      previousMillis = currentMillis;  // Remember the time
-      digitalWrite(outputPin, outputState);  // Update the actual output
-    }
-    else if ((outputState == LOW) && (currentMillis - previousMillis >= FreqTime))
-    {
-      outputState = HIGH;  // turn it on
-      previousMillis = currentMillis;   // Remember the time
-      digitalWrite(outputPin, outputState);   // Update the actual output
-    }
-  }
-};
 
 // configuration switcher
 int Trinket     = 1;
@@ -59,11 +16,22 @@ int dahLength = 3 * ditLength;
 int interToneLength = ditLength;
 int interLetterLength = dahLength;
 int interWordLength = 7 * ditLength;
+boolean iambic = false; // Don't use this yet. There is a timing issue to figure out
 
-// Key inputs
+// Play() setup
+// map dit to TRUE and dah to FALSE for use in play
+boolean dit = true;
+boolean dah = false;
+boolean last;
+unsigned long now;
+unsigned long interToneLockTimer;
+
+// Key inputs and
+// sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
 if (Board == Uno) {
   int ditPin = 2; // Uno 2 has hardware interrupt
   int dahPin = 3; // Uno 3 has hardware interrupt
+  int speakerPin = 4; // Digital pin 4 on uno is basic PWM
 }
 
 // Trinket and Trinket Pro only have 1 hardware interrupt
@@ -71,28 +39,14 @@ if (Board == Uno) {
 if (Board == Trinket) {
   int ditPin = 1; // PB1 
   int dahPin = 2; // PB2
+  int speakerPin = 0;
 }
 
 if (Board == TrinketPro) {
   int ditPin = 9;   // PB1
   int dahPin = 10;  // PB2
-}
-
-// sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
-if (Board == Uno) {
-  int speakerPin = 4; // Digital pin 4 on uno is basic PWM
-}
-
-if (Board == Trinket) {
-  int speakerPin = 0;
-}
-
-if (Board == TrinketPro) {
   int speakerPin = 9; // Digital pin 9 on Trinket pro should be high speed PWM
 }
-
-// instantiate an oscillator (One for dits and one for dahs? TBD)
-Oscillator output1(speakerPin, ditLength, sideToneFreq);
 
 // for pin change interrupts we need the following
 void InitialiseInterruptTrinket(){
@@ -109,16 +63,53 @@ void InitialiseInterruptTrinketPro(){
   sei();    // turn interrupts back on
 }
 
+void playDit() {
+  now = millis();
+  if (now > interToneLockTimer) {
+    tone(speakerPin, sideToneFreq, ditLength);
+  }
+  interToneLockTimer = millis() + interToneLength;
+  last = dit;
+}
+
+void playDah() {
+  now = millis();
+  if (now > interToneLockTimer) {
+    tone(speakerPin, sideToneFreq, dahLength);
+  }
+  interToneLockTimer = millis() + interToneLength;
+  last = dah;
+}
+
+void play(sym) {
+  if (sym) {
+    playDit();
+  } else {
+    playDah();
+  } 
+}
+
+void diDah() {
+  if (digitalRead(ditPin)==0 && digitalRead(dahPin)==0) {
+    play(!last);
+    pause();  // FIXME. How are you going to handle the timing
+              // between this pause and the lock in play()?
+  }
+}
+
 void setup() 
 { 
+  pinMode(ditPin, INPUTPULLUP);
+  pinMode(dahPin, INPUTPULLUP);
+  
   if (Board = Uno) {
     // set up ditPin to read ditButton on regular Arduinos with 2 hardware interrups
     pinMode(ditPin, INPUT_PULLUP);
-    attachInterrupt(0, PlayDit, FALLING);
+    attachInterrupt(digitalPinToInterrupt(0), playDit, LOW);
     
     // set up dahPin to read dahButton on regular Arduinos with 2 hardware interrups
     pinMode(dahPin, INPUT_PULLUP);
-    attachInterrupt(1, PlayDah, FALLING);
+    attachInterrupt(digitalPinToInterrupt(1), playDah, LOW);
   }
   
   if (Board == Trinket) {
@@ -130,8 +121,13 @@ void setup()
     //always be the same interrupt routine
   
     ISR(PCINT_vect) {    
-    if (digitalRead(ditPin)==0)  Serial.println("dit");
-    if (digitalRead(dahPin)==0)  Serial.println("dah");
+      if (iambic) {
+        diDah(); // pin detection built into diDah()
+      } else if {
+        (digitalRead(ditPin)==0)  play(dit);
+      } else if {
+        (digitalRead(dahPin)==0)  play(dah);
+      }
     }
   }
 
@@ -144,31 +140,17 @@ void setup()
     //always be the same interrupt routine
   
     ISR(PCINT0_vect) {    
-    if (digitalRead(ditPin)==0)  Serial.println("dit");
-    if (digitalRead(dahPin)==0)  Serial.println("dah");
+    if (iambic) {
+        diDah();
+      } else if {
+        (digitalRead(ditPin)==0)  play(dit);
+      } else if {
+        (digitalRead(dahPin)==0)  play(dah);
+      }
     }
   }
 } 
 
-/* 
-This is vestigial. I may need the update stuff
-as a reminder for the callback to play.
-Once I'm done with those I should delete this.
-
-// Interrupt is called once a millisecond, 
-SIGNAL(TIMER0_COMPA_vect) 
-{
-  unsigned long currentMillis = millis();
-  
-  // if(digitalRead(2) == HIGH)
-  {
-     output1.Update(currentMillis);
-  }
-  
-  output2.Update(currentMillis);
-  output3.Update(currentMillis);
-} 
- */
 void loop()
 {
 }
