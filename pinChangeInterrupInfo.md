@@ -25,8 +25,8 @@ PCINT14 = PC6 = -
 PCINT15 = -   = -
 PCINT16 = PD0 = RXD
 PCINT17 = PD1 = TXD
-PCINT18 = PD2 = D2
-PCINT19 = PD3 = D3
+PCINT18 = PD2 = D2  // Hardware int0
+PCINT19 = PD3 = D3  // Hardware int1 (Trinket pro doesn't have this pin)
 PCINT20 = PD4 = D4
 ----------------------------
 setting PCICR:
@@ -64,7 +64,7 @@ PCINT3  = PB3 = #3
 PCINT4  = PB4 = #4
 PCINT5  = PB5 = -
 -----------------------------
-setting PCMSKx (For enabling pins in PCINT0)
+setting PCMSK (For enabling pins in PCIE)
 set these in -> PCMSK (There is only one register so only one mask)
 bit_value       PCINTx
 1               0

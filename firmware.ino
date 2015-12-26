@@ -43,13 +43,22 @@ class Oscillator
 };
 
 // configuration switcher
-int Trinket = 1;
-int Uno = 2;
+int Trinket     = 1;
+int TrinketPro  = 2;
+int Uno         = 3;
 int Board = Uno // Set this to the board you are running.
 
 // CW characteristics
 int sideToneFreq = 622; // should be a pleasant tone in the range CW ops are used to
-int ditLength = 10;   // FIXME this is the length of a dit in milliseconds at desired WPM
+int wpm = 20;         // operation word per minute
+// I don't recommend changing anything below here.
+// unless you are looking for some Farnsworth action. Then you could
+// play with interLetterLength and interWordLength to achieve that effect.
+int ditLength = 1200 / wpm;   // this is the length of a dit in milliseconds at desired WPM
+int dahLength = 3 * ditLength;
+int interToneLength = ditLength;
+int interLetterLength = dahLength;
+int interWordLength = 7 * ditLength;
 
 // Key inputs
 if (Board == Uno) {
@@ -57,9 +66,16 @@ if (Board == Uno) {
   int dahPin = 3; // Uno 3 has hardware interrupt
 }
 
+// Trinket and Trinket Pro only have 1 hardware interrupt
+// so we will use pin change interrupts for them
 if (Board == Trinket) {
-  int ditPin = 3; // Trinket pin 3 has interrupt 0 attached (I hope)
-  int dahPin = 4; // Trinket pin 4 has interrupt 1 attached (I hope)
+  int ditPin = 1; // PB1 
+  int dahPin = 2; // PB2
+}
+
+if (Board == TrinketPro) {
+  int ditPin = 9;   // PB1
+  int dahPin = 10;  // PB2
 }
 
 // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
@@ -68,30 +84,77 @@ if (Board == Uno) {
 }
 
 if (Board == Trinket) {
+  int speakerPin = 0;
+}
+
+if (Board == TrinketPro) {
   int speakerPin = 9; // Digital pin 9 on Trinket pro should be high speed PWM
 }
 
 // instantiate an oscillator (One for dits and one for dahs? TBD)
 Oscillator output1(speakerPin, ditLength, sideToneFreq);
 
+// for pin change interrupts we need the following
+void InitialiseInterruptTrinket(){
+  cli();    // switch interrupts off while messing with their settings  
+  GMSK = 0x20;          // Enable PCIE interrupt
+  PCMSK = 0b00000110;  // Enable pins 
+  sei();    // turn interrupts back on
+}
+
+void InitialiseInterruptTrinketPro(){
+  cli();    // switch interrupts off while messing with their settings  
+  PCICR =0x01;          // Enable PCINT0 interrupt
+  PCMSK1 = 0b00000110;
+  sei();    // turn interrupts back on
+}
+
 void setup() 
 { 
   if (Board = Uno) {
-  // set up ditPin to read ditButton on regular Arduinos with 2 hardware interrups
-  pinMode(ditPin, INPUT_PULLUP);
-  attachInterrupt(0, PlayDit, FALLING);
-  
-  // set up dahPin to read dahButton on regular Arduinos with 2 hardware interrups
-  pinMode(dahPin, INPUT_PULLUP);
-  attachInterrupt(1, PlayDah, FALLING);
+    // set up ditPin to read ditButton on regular Arduinos with 2 hardware interrups
+    pinMode(ditPin, INPUT_PULLUP);
+    attachInterrupt(0, PlayDit, FALLING);
+    
+    // set up dahPin to read dahButton on regular Arduinos with 2 hardware interrups
+    pinMode(dahPin, INPUT_PULLUP);
+    attachInterrupt(1, PlayDah, FALLING);
   }
   
   if (Board == Trinket) {
-    // create pinchange interrupts for dit and dah pins
+    InitialiseInterruptTrinket();
+  
+    // Interrupt service routine. 
+    //Every single pin in PCMSK: PCINT0..5 (=#0 - #5) change
+    // will generate an interrupt: but this will 
+    //always be the same interrupt routine
+  
+    ISR(PCINT_vect) {    
+    if (digitalRead(ditPin)==0)  Serial.println("dit");
+    if (digitalRead(dahPin)==0)  Serial.println("dah");
+    }
+  }
+
+  if (Board == TrinketPro) {
+    InitialiseInterruptTrinketPro();
+  
+    // Interrupt service routine. 
+    //Every single pin in PCMSK0: PCINT0..7 (=D8 - D13) change
+    // will generate an interrupt: but this will 
+    //always be the same interrupt routine
+  
+    ISR(PCINT0_vect) {    
+    if (digitalRead(ditPin)==0)  Serial.println("dit");
+    if (digitalRead(dahPin)==0)  Serial.println("dah");
+    }
   }
 } 
 
- 
+/* 
+This is vestigial. I may need the update stuff
+as a reminder for the callback to play.
+Once I'm done with those I should delete this.
+
 // Interrupt is called once a millisecond, 
 SIGNAL(TIMER0_COMPA_vect) 
 {
@@ -105,7 +168,7 @@ SIGNAL(TIMER0_COMPA_vect)
   output2.Update(currentMillis);
   output3.Update(currentMillis);
 } 
- 
+ */
 void loop()
 {
 }
