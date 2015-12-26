@@ -1,3 +1,6 @@
+#include <phoneCodeOscillatorCommon.h>
+
+
   // Key inputs and
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
   // Trinket and Trinket Pro only have 1 hardware interrupt
@@ -30,8 +33,8 @@ unsigned long interToneLockTimer;
   // for pin change interrupts we need the following
 void InitialiseInterruptTrinket(){
   cli();    // switch interrupts off while messing with their settings  
-  GMSK = 0x20;          // Enable PCIE interrupt
-  PCMSK = 0b00000110;  // Enable pins 
+  GIMSK =   0b00010000;  // Enable PCIE interrupt
+  PCMSK  =  0b00000110;  // Enable pins 
   sei();    // turn interrupts back on
 }
 
@@ -53,13 +56,15 @@ void playDah() {
   last = dah;
 }
 
-void play(sym) {
+void play(boolean sym) {
   if (sym) {
     playDit();
   } else {
     playDah();
   } 
 }
+
+void pause() {}
 
 void diDah() {
   if (digitalRead(ditPin)==0 && digitalRead(dahPin)==0) {
@@ -69,29 +74,36 @@ void diDah() {
   }
 }
 
+PCOCommon pcoCommon(ditPin, dahPin);
+
 void setup() 
 { 
-  pinMode(ditPin, INPUTPULLUP);
-  pinMode(dahPin, INPUTPULLUP);
+  pinMode(ditPin, INPUT_PULLUP);
+  pinMode(dahPin, INPUT_PULLUP);
+
+    // Check if one of the paddle circuits is closed at startup. This is the signal
+    // to enter configuration mode for either sidetone or code speed.
+  pcoCommon.checkIfConfigure();
 
   InitialiseInterruptTrinket();
 
-  // Interrupt service routine. 
-  //Every single pin in PCMSK: PCINT0..5 (=#0 - #5) change
-  // will generate an interrupt: but this will 
-  //always be the same interrupt routine
-
-  ISR(PCINT_vect) {    
-    if (iambic) {
-      diDah(); // pin detection built into diDah()
-    } else if {
-      (digitalRead(ditPin)==0)  play(dit);
-    } else if {
-      (digitalRead(dahPin)==0)  play(dah);
-    }
-  }
 } 
 
 void loop()
 {
+}
+
+// Interrupt service routine. 
+//Every single pin in PCMSK: PCINT0..5 (=#0 - #5) change
+// will generate an interrupt: but this will 
+//always be the same interrupt routine
+
+ISR(PCINT_vect) {    
+  if (iambic) {
+    diDah(); // pin detection built into diDah()
+  } else if (digitalRead(ditPin)==0) { 
+      play(dit);
+  } else if (digitalRead(dahPin)==0) {
+      play(dah);
+  }
 }

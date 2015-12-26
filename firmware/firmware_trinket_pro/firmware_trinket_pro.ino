@@ -78,11 +78,6 @@ PCOCommon pcoCommon(ditPin, dahPin);
 
 void setup() 
 { 
-  // Key inputs and
-  // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
-  // Trinket and Trinket Pro only have 1 hardware interrupt
-  // so we will use pin change interrupts for them
- 
   pinMode(ditPin, INPUT_PULLUP);
   pinMode(dahPin, INPUT_PULLUP);
 
