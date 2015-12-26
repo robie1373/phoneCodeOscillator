@@ -5,8 +5,8 @@
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
   // Trinket and Trinket Pro only have 1 hardware interrupt
   // so we will use pin change interrupts for them
-int ditPin = 9;   // PB1
-int dahPin = 10;  // PB2
+int ditPin = 10;   // PB3
+int dahPin = 11;  // PB2
 int speakerPin = 9; // Digital pin 9 on Trinket pro should be high speed PWM
 
   // CW characteristics
@@ -34,7 +34,7 @@ unsigned long interToneLockTimer;
 void InitialiseInterruptTrinketPro(){
   cli();    // switch interrupts off while messing with their settings  
   PCICR =0x01;          // Enable PCINT0 interrupt
-  PCMSK0 = 0b00000110;
+  PCMSK0 = 0b00001100; // PCINT2 + PCINT3
   sei();    // turn interrupts back on
 }
 
@@ -92,17 +92,16 @@ void setup()
 
   InitialiseInterruptTrinketPro();
 
-  // Interrupt service routine. 
-  //Every single pin in PCMSK0: PCINT0..7 (=D8 - D13) change
-  // will generate an interrupt: but this will 
-  //always be the same interrupt routine
-
-
 } 
 
 void loop()
 {
 }
+
+// Interrupt service routine. 
+//Every single pin in PCMSK0: PCINT0..7 (=D8 - D13) change
+// will generate an interrupt: but this will 
+//always be the same interrupt routine
 
 ISR (PCINT0_vect) {    
   if (iambic) {
