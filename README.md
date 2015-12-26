@@ -18,7 +18,7 @@ __Important note: I have not had a chance to build this circuit or run the code 
 
 ## Hardware designs
 
-This repo includes designs for 3 versions of the board. Or will eventually. For now, all are through-hole. An SMT version would be awesome. I may do that too. Or maybe you will?
+This repo includes designs in Fritzing for 3 versions of the board. Or will eventually. For now, all are through-hole. An SMT version would be awesome. I may do that too. Or maybe you will?
 
 BOM will end up in the repo once stabilized.
 
