@@ -1,3 +1,6 @@
+#include <phoneCodeOscillatorCommon.h>
+
+
   // Key inputs and
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
 int ditPin = 2; // Uno 2 has hardware interrupt
@@ -43,36 +46,37 @@ void playDah() {
   last = dah;
 }
 
-void play() {
-  if (!last) {
+void play(boolean sym) {
+  if (sym) {
     playDit();
   } else {
     playDah();
   } 
 }
 
-void pause() {
-  
-}
+void pause() {}
 
 void diDah() {
   if (digitalRead(ditPin)==0 && digitalRead(dahPin)==0) {
-    play();
+    play(!last);
     pause();  // FIXME. How are you going to handle the timing
               // between this pause and the lock in play()?
   }
 }
 
+PCOCommon pcoCommon(ditPin, dahPin);
+
 void setup() 
 { 
+  pinMode(ditPin, INPUT_PULLUP);
+  pinMode(dahPin, INPUT_PULLUP);
+  pcoCommon.checkIfConfigure();
 
   // set up ditPin to read ditButton on regular Arduinos with 2 hardware interrups
-  pinMode(ditPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(0), playDit, LOW);
+  attachInterrupt(0, playDit, LOW);
   
   // set up dahPin to read dahButton on regular Arduinos with 2 hardware interrups
-  pinMode(dahPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(1), playDah, LOW);
+  attachInterrupt(1, playDah, LOW);
 } 
 
 void loop()
