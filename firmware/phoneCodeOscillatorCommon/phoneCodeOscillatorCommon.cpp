@@ -25,7 +25,10 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     int interToneLength = ditLength;
     int interLetterLength = dahLength;
     int interWordLength = 7 * ditLength;
+    
     boolean iambic = false; // This may be ready to go
+    // Note that if iambic is false and both paddles are closed no tone will be sent
+
     // Play() setup
     // map dit to TRUE and dah to FALSE for use in play
     boolean dit = true;
@@ -84,7 +87,9 @@ void PCOCommon::diDah() {
 
 void PCOCommon::determineSymbol() {
     if (sendDit && sendDah) {
-    diDah();
+      if (iambic) {
+        diDah();
+      }
   } else {
     if (sendDit) {playDit();}
     else if (sendDah) {playDah();}

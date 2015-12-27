@@ -43,10 +43,7 @@ void loop()
 //always be the same interrupt routine
 
 ISR(PCINT_vect) {    
-  if (pcoCommon.iambic) {
-    // pin detection built into diDah()
-    pcoCommon.diDah();
-  } else if (digitalRead(ditPin)==0) { 
+  if (digitalRead(ditPin)==0) { 
       pcoCommon.sendDit = true;
   } else if(digitalRead(ditPin)==1) {
       pcoCommon.sendDit = false;
