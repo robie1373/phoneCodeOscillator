@@ -33,8 +33,7 @@ void setup()
 
 void loop()
 {
-  if (pcoCommon.sendDit) {pcoCommon.playDit();}
-  if (pcoCommon.sendDah) {pcoCommon.playDah();}
+  pcoCommon.determineSymbol();
 }
 
 // Interrupt service routine. 
@@ -48,7 +47,11 @@ ISR (PCINT0_vect) {
     pcoCommon.diDah();
   } else if (digitalRead(ditPin)==0) { 
       pcoCommon.sendDit = true;
+  } else if(digitalRead(ditPin)==1) {
+      pcoCommon.sendDit = false;
   } else if (digitalRead(dahPin)==0) {
       pcoCommon.sendDah = true;
+  } else if (digitalRead(dahPin)==1) {
+      pcoCommon.sendDah = false;
   }
 }

@@ -25,7 +25,7 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     int interToneLength = ditLength;
     int interLetterLength = dahLength;
     int interWordLength = 7 * ditLength;
-    boolean iambic = false; // Don't use this yet. There is a timing issue to figure out
+    boolean iambic = false; // This may be ready to go
     // Play() setup
     // map dit to TRUE and dah to FALSE for use in play
     boolean dit = true;
@@ -34,7 +34,7 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     boolean sendDah;
     boolean last;
     unsigned long now;
-    unsigned long interToneLockTimer;
+    unsigned long interToneLockTimer = 0;
 
   }
 
@@ -52,20 +52,18 @@ void PCOCommon::playDit() {
   now = millis();
   if (now > interToneLockTimer) {
     tone(_speakerPin, sideToneFreq, ditLength);
+    last = dit;
+    interToneLockTimer = millis() + interToneLength + ditLength;
   }
-  interToneLockTimer = millis() + interToneLength;
-  last = dit;
-  sendDit = false;
 }
 
 void PCOCommon::playDah() {
   now = millis();
   if (now > interToneLockTimer) {
     tone(_speakerPin, sideToneFreq, dahLength);
+    last = dah;
+    interToneLockTimer = millis() + interToneLength + dahLength;
   }
-  interToneLockTimer = millis() + interToneLength;
-  last = dah;
-  sendDah = false;
 }
 
 void PCOCommon::play(boolean sym) {
@@ -79,10 +77,17 @@ void PCOCommon::play(boolean sym) {
 void PCOCommon::diDah() {
   if (digitalRead(_ditPin)==0 && digitalRead(_dahPin)==0) {
     //play(!last);
-    if (last) { sendDah = true;}
-    else {sendDit = true;}
-    pause();  // FIXME. How are you going to handle the timing
-              // between this pause and the lock in play()?
+    if (last) {playDah();}
+    else {playDit();}
+  }
+}
+
+void PCOCommon::determineSymbol() {
+    if (sendDit && sendDah) {
+    diDah();
+  } else {
+    if (sendDit) {playDit();}
+    else if (sendDah) {playDah();}
   }
 }
 

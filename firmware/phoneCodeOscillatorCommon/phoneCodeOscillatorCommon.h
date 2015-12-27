@@ -34,6 +34,7 @@ class PCOCommon
     void play(boolean sym);
     void pause();
     void diDah();
+    void determineSymbol();
 
   
   private: 
