@@ -23,7 +23,8 @@ This repo includes designs in Fritzing for 3 versions of the board. Or will even
 BOM will end up in the repo once stabilized.
 
 ~~26 Dec 2015 - Uno firmware officially broken for now. Something in the interrupt routine.~~
-__ 27 Dec 2015 - Uno firmware might be fixed. I'm optimistic.__
+
+__27 Dec 2015 - Uno firmware might be fixed. I'm optimistic.__
 
 The Uno version exists because lots of people have them already. It is less desirable because the PWM output used to generate the tone is not as high in resolution as one might want. It ought to work in a pinch, though, and if you are just running it into an app on your phone it doesn't matter at all. If you want to monitor the sidetone (as I would expect) you may get a bit tired of the sound. Who knows. With the Uno version you will be powering the circuit through the Uno. The circuit diagram does not necissarily reflect that at this point. Consider the Uno circuit to be the least well thought out. It is not my highest priority at this point frankly.
 
