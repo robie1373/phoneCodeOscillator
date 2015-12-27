@@ -42,7 +42,8 @@ void loop()
 
 ISR (PCINT0_vect) {    
   if (pcoCommon.iambic) {
-      pcoCommon.diDah();
+    // pin detection built into diDah()
+    pcoCommon.diDah();
   } else if (digitalRead(ditPin)==0) { 
       pcoCommon.play(pcoCommon.dit);
   } else if (digitalRead(dahPin)==0) {
