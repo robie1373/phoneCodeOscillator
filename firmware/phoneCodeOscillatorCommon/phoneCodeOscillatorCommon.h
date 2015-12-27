@@ -24,6 +24,8 @@ class PCOCommon
     boolean iambic;
     boolean dit;
     boolean dah;
+    boolean sendDit;
+    boolean sendDah;
     boolean last;
     unsigned long now;
     unsigned long interToneLockTimer;

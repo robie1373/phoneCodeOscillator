@@ -9,6 +9,9 @@ int speakerPin = 5; // Digital pin 5 on uno is basic PWM
 
 PCOCommon pcoCommon(ditPin, dahPin, speakerPin);
 
+void setDit() {pcoCommon.sendDit = true;}
+void setDah() {pcoCommon.sendDah = true;}
+
 void setup() 
 { 
   pinMode(ditPin, INPUT_PULLUP);
@@ -16,12 +19,14 @@ void setup()
   pcoCommon.checkIfConfigure();
 
   // set up ditPin to read ditButton on regular Arduinos with 2 hardware interrups
-  attachInterrupt(0, pcoCommon.playDit, LOW);
+  attachInterrupt(0, setDit, LOW);
   
   // set up dahPin to read dahButton on regular Arduinos with 2 hardware interrups
-  attachInterrupt(1, pcoCommon.playDah, LOW);
+  attachInterrupt(1, setDah, LOW);
 } 
 
 void loop()
 {
+  if (pcoCommon.sendDit) {pcoCommon.playDit();}
+  if (pcoCommon.sendDah) {pcoCommon.playDah();}
 }

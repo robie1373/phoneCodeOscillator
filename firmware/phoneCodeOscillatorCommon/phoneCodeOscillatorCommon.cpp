@@ -30,6 +30,8 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     // map dit to TRUE and dah to FALSE for use in play
     boolean dit = true;
     boolean dah = false;
+    boolean sendDit;
+    boolean sendDah;
     boolean last;
     unsigned long now;
     unsigned long interToneLockTimer;
@@ -53,6 +55,7 @@ void PCOCommon::playDit() {
   }
   interToneLockTimer = millis() + interToneLength;
   last = dit;
+  sendDit = false;
 }
 
 void PCOCommon::playDah() {
@@ -62,6 +65,7 @@ void PCOCommon::playDah() {
   }
   interToneLockTimer = millis() + interToneLength;
   last = dah;
+  sendDah = false;
 }
 
 void PCOCommon::play(boolean sym) {
@@ -74,7 +78,9 @@ void PCOCommon::play(boolean sym) {
 
 void PCOCommon::diDah() {
   if (digitalRead(_ditPin)==0 && digitalRead(_dahPin)==0) {
-    play(!last);
+    //play(!last);
+    if (last) { sendDah = true;}
+    else {sendDit = true;}
     pause();  // FIXME. How are you going to handle the timing
               // between this pause and the lock in play()?
   }

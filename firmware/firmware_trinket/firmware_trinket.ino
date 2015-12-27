@@ -34,6 +34,8 @@ void setup()
 
 void loop()
 {
+  if (pcoCommon.sendDit) {pcoCommon.playDit();}
+  if (pcoCommon.sendDah) {pcoCommon.playDah();}
 }
 
 // Interrupt service routine. 
@@ -46,8 +48,8 @@ ISR(PCINT_vect) {
     // pin detection built into diDah()
     pcoCommon.diDah(); 
   } else if (digitalRead(ditPin)==0) { 
-      pcoCommon.play(pcoCommon.dit);
+      pcoCommon.sendDah = true;
   } else if (digitalRead(dahPin)==0) {
-      pcoCommon.play(pcoCommon.dah);
+      pcoCommon.sendDah = true;
   }
 }
