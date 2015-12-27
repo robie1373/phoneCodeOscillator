@@ -22,6 +22,8 @@ This repo includes designs in Fritzing for 3 versions of the board. Or will even
 
 BOM will end up in the repo once stabilized.
 
+~~26 Dec 2015 - Uno officially broken for now. Something in the interrupt routine.~~
+
 The Uno version exists because lots of people have them already. It is less desirable because the PWM output used to generate the tone is not as high in resolution as one might want. It ought to work in a pinch, though, and if you are just running it into an app on your phone it doesn't matter at all. If you want to monitor the sidetone (as I would expect) you may get a bit tired of the sound. Who knows. With the Uno version you will be powering the circuit through the Uno. The circuit diagram does not necissarily reflect that at this point. Consider the Uno circuit to be the least well thought out. It is not my highest priority at this point frankly.
 
 The Trinket and Trinket Pro versions are very similar. The primary difference is the pinouts of those boards. If I can design a single board to support both of them (unlikely) I will. Otherwise there will be a version for each. The trinket is quite a bitl smaller which may have advantages. Trinket and Trinket pro versions are powered by a LiPo batter running through a sweet little charging breakout board from Adafruit.
