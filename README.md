@@ -22,7 +22,7 @@ This repo includes designs in Fritzing for 3 versions of the board. Or will even
 
 BOM will end up in the repo once stabilized.
 
-~~26 Dec 2015 - Uno officially broken for now. Something in the interrupt routine.~~
+__26 Dec 2015 - Uno firmware officially broken for now. Something in the interrupt routine.__
 
 The Uno version exists because lots of people have them already. It is less desirable because the PWM output used to generate the tone is not as high in resolution as one might want. It ought to work in a pinch, though, and if you are just running it into an app on your phone it doesn't matter at all. If you want to monitor the sidetone (as I would expect) you may get a bit tired of the sound. Who knows. With the Uno version you will be powering the circuit through the Uno. The circuit diagram does not necissarily reflect that at this point. Consider the Uno circuit to be the least well thought out. It is not my highest priority at this point frankly.
 
@@ -31,8 +31,8 @@ The Trinket and Trinket Pro versions are very similar. The primary difference is
 ## Installing
 
 1. clone the repo
-2. create symbolic link from phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/ to the Library folder in your Arduino install
-3. Restart Arduino if needed and verify that the library shows up under Sketch -> Include Libraries...
+2. create symbolic link from phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/ to the Library folder in your Arduino IDE install
+3. Restart Arduino IDE if needed and verify that the library shows up under Sketch -> Include Libraries...
 4. If all looks good, open the version that matches your board
 5. Compile and upload.
 
@@ -45,7 +45,11 @@ The Trinket and Trinket Pro versions are very similar. The primary difference is
 
 To configure code speed __(26 Dec 2015 - Not yet implemented)__
 
-In the meantime, this setting is in phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/phoneCodeOscillatorCommon.cpp. You can hardcode your desired settings there.
+In the meantime, this setting is in 
+
+    phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/phoneCodeOscillatorCommon.cpp
+    
+You can hardcode your desired settings there.
 
 * hold the dit paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dit paddle.
@@ -54,7 +58,11 @@ In the meantime, this setting is in phoneCodeOscillator/firmware/phoneCodeOscill
 
 To configure sidetone __(26 Dec 2015 - Not yet implemented)__
 
-In the meantime, this setting is in phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/phoneCodeOscillatorCommon.cpp. You can hardcode your desired settings there.
+In the meantime, this setting is in 
+
+    phoneCodeOscillator/firmware/phoneCodeOscillatorCommon/phoneCodeOscillatorCommon.cpp
+
+You can hardcode your desired settings there.
 
 * hold the dah paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dah paddle.
