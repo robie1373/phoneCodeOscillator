@@ -76,6 +76,10 @@ You can hardcode your desired settings there.
 * finish speed and side-tone configuration
 * make speed and tone setting sticky
 
-# Issues or Discussion
+## Issues or Discussion
 
 Please use the github issues or wiki for that.
+
+## Announcements
+
+* 29 December 2015 - v1.0.0 is here! This code has run on a Trinket Pro and demonstrates the basic level of functionality I wanted. Huzzah! Huzzah! Huzzah! I have identified a couple of circuit revisions I want to make for quality of life reasons. Those will come in a later patch.
