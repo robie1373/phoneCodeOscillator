@@ -41,7 +41,7 @@ The Trinket and Trinket Pro versions are very similar. The primary difference is
 ## Using
 
 * Plug key into the TRS (3 conductor) headphone jack on the board
-* Connect a smartphone and/or headphones to the TRRS (4 conductor) headphone jack(s) on the board
+* __It is probably a good idea to put another potentiometer or a 10k Ohm resistor between the outlet and your phone until it can be proven the levels are safe. Fair warning.__ Connect a smartphone and/or headphones to the TRRS (4 conductor) headphone jack(s) on the board
 * Power on board
 * Send code!
 
@@ -76,6 +76,10 @@ You can hardcode your desired settings there.
 * finish speed and side-tone configuration
 * make speed and tone setting sticky
 
-# Issues or Discussion
+## Issues or Discussion
 
 Please use the github issues or wiki for that.
+
+## Announcements
+
+* 29 December 2015 - v1.0.0 is here! This code has run on a Trinket Pro and demonstrates the basic level of functionality I wanted. Huzzah! Huzzah! Huzzah! I have identified a couple of circuit revisions I want to make for quality of life reasons. Those will come in a later patch.
