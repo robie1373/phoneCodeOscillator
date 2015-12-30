@@ -47,7 +47,9 @@ ISR(PCINT_vect) {
       pcoCommon.sendDit = true;
   } else if(digitalRead(ditPin)==1) {
       pcoCommon.sendDit = false;
-  } else if (digitalRead(dahPin)==0) {
+  } 
+
+   if (digitalRead(dahPin)==0) {
       pcoCommon.sendDah = true;
   } else if (digitalRead(dahPin)==1) {
       pcoCommon.sendDah = false;

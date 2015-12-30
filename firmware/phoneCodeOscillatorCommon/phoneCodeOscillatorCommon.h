@@ -43,6 +43,7 @@ class PCOCommon
     int _speedPin;
     int _tonePin;
     int _speakerPin;
+
     void _checkIfConfigure(int tonePin, int speedPin);
     void _changeSideTone(boolean direction);
     void _changeCodeSpeed(boolean direction);

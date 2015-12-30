@@ -42,11 +42,13 @@ void loop()
 //always be the same interrupt routine
 
 ISR (PCINT0_vect) {    
-  if (digitalRead(ditPin)==0) { 
+   if (digitalRead(ditPin)==0) { 
       pcoCommon.sendDit = true;
   } else if(digitalRead(ditPin)==1) {
       pcoCommon.sendDit = false;
-  } else if (digitalRead(dahPin)==0) {
+  } 
+
+   if (digitalRead(dahPin)==0) {
       pcoCommon.sendDah = true;
   } else if (digitalRead(dahPin)==1) {
       pcoCommon.sendDah = false;

@@ -13,4 +13,5 @@ Count | ID        | Description                     | Source
 1     | PID: 160  | Piezo Buzzer - PS1240 | [Adafruit](https://www.adafruit.com/products/160)
 2     | PID: 1699 | Breadboard-Friendly 3.5mm Stereo Headphone Jack | [Adafruit](https://www.adafruit.com/products/1699)
 1     | BOB-11570 | SparkFun TRRS 3.5mm Jack Breakout | [Sparkfun](https://www.sparkfun.com/products/11570)
+-     | 490-SJ-435107RS | 3.5 MM AUDIO JACK TRRS | [Mouser](http://www.mouser.com/ProductDetail/CUI/SJ-435107RS/?qs=sGAEpiMZZMv0W4pxf2HiVz9SCMkER55fW3%252bb%252bm44Y5oMUWDxmq8xNQ%3d%3d)
 1     | PID: 1609 | Adafruit Perma-Proto Half-sized Breadboard PCB - Single | [Adafruit](https://www.adafruit.com/products/1609)
