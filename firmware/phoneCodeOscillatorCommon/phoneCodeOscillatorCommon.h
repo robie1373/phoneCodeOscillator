@@ -13,26 +13,12 @@ class PCOCommon
 {
   public: 
     PCOCommon(int ditPin, int dahPin, int speakerPin);
-    void checkIfConfigure();
     int sideToneFreq;
     int wpm;
-    int ditLength;
-    int dahLength;
-    int interToneLength;
-    int interLetterLength;
-    int interWordLength;
-    boolean dit;
-    boolean dah;
+
     boolean sendDit;
     boolean sendDah;
-    boolean last;
-    unsigned long now;
-    unsigned long interToneLockTimer;
-    void playDit();
-    void playDah();
-    void play(boolean sym);
-    void pause();
-    void diDah();
+    void checkIfConfigure();
     void determineSymbol();
 
   
@@ -48,7 +34,20 @@ class PCOCommon
     int singleKey = 1;
     int straightKey = 2;
     int iambic = 3;
-
+    int _ditLength;
+    int _dahLength;
+    int _interToneLength;
+    int _interLetterLength;
+    int _interWordLength;
+    unsigned long _now;
+    unsigned long _interToneLockTimer;
+    boolean _last;
+    boolean _dit;
+    boolean _dah;
+    void _playDit();
+    void _playDah();
+    void _play(boolean sym);
+    void _diDah();
 
     void _checkIfConfigure(int tonePin, int speedPin);
     void _changeSideTone(boolean direction);

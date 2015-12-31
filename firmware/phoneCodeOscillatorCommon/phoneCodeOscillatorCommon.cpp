@@ -19,12 +19,12 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     wpm = 20;         // operation word per minute
       // I don't recommend changing anything below here.
       // unless you are looking for some Farnsworth action. Then you could
-      // play with interLetterLength and interWordLength to achieve that effect.
-    ditLength = 1200 / wpm;   // this is the length of a dit in milliseconds at desired WPM
-    dahLength = 3 * ditLength;
-    interToneLength = ditLength;
-    interLetterLength = dahLength;
-    interWordLength = 7 * ditLength;
+      // play with _interLetterLength and _interWordLength to achieve that effect.
+    _ditLength = 1200 / wpm;   // this is the length of a dit in milliseconds at desired WPM
+    _dahLength = 3 * _ditLength;
+    _interToneLength = _ditLength;
+    _interLetterLength = _dahLength;
+    _interWordLength = 7 * _ditLength;
     
     // Modes: Mode must be _one_ of singleKey, straightKey, or iambic (note capitalization).
     // Once you set mode, it sets other variables to mange the tone generation. Don't mess with
@@ -48,12 +48,10 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
 
     // Play() setup
     // map dit to TRUE and dah to FALSE for use in play
-    dit = true;
-    dah = false;
+    _dit = true;
+    _dah = false;
     sendDit;
     sendDah;
-    last;
-    now;
   }
 
 void PCOCommon::_checkIfConfigure(int tonePin, int speedPin) {
@@ -66,37 +64,37 @@ void PCOCommon::_checkIfConfigure(int tonePin, int speedPin) {
   }
 }
 
-void PCOCommon::playDit() {
-  now = millis();
-  if (now > interToneLockTimer) {
+void PCOCommon::_playDit() {
+  _now = millis();
+  if (_now > _interToneLockTimer) {
     tone(_speakerPin, sideToneFreq, 60);
-    last = dit;
-    interToneLockTimer = millis() + interToneLength + ditLength;
+    _last = _dit;
+    _interToneLockTimer = millis() + _interToneLength + _ditLength;
   }
 }
 
-void PCOCommon::playDah() {
-  now = millis();
-  if (now > interToneLockTimer) {
+void PCOCommon::_playDah() {
+  _now = millis();
+  if (_now > _interToneLockTimer) {
     tone(_speakerPin, sideToneFreq, 180);
-    last = dah;
-    interToneLockTimer = millis() + interToneLength + dahLength;
+    _last = _dah;
+    _interToneLockTimer = millis() + _interToneLength + _dahLength;
   }
 }
 
-void PCOCommon::play(boolean sym) {
+void PCOCommon::_play(boolean sym) {
   if (sym) {
-    playDit();
+    _playDit();
   } else {
-    playDah();
+    _playDah();
   } 
 }
 
-void PCOCommon::diDah() {
+void PCOCommon::_diDah() {
   if (digitalRead(_ditPin)==0 && digitalRead(_dahPin)==0) {
-    //play(!last);
-    if (last) {playDah();}
-    else {playDit();}
+    //_play(!_last);
+    if (_last) {_playDah();}
+    else {_playDit();}
   }
 }
 
@@ -110,15 +108,14 @@ void PCOCommon::determineSymbol() {
       }
     } else if (sendDit && sendDah) {
       if (_iambic) {
-        diDah();
+        _diDah();
       }
   } else {
-    if (sendDit) {playDit();}
-    else if (sendDah) {playDah();}
+    if (sendDit) {_playDit();}
+    else if (sendDah) {_playDah();}
   }
 }
 
-void PCOCommon::pause() {}
 
 void PCOCommon::checkIfConfigure() {
   _checkIfConfigure(_tonePin, _speedPin);
