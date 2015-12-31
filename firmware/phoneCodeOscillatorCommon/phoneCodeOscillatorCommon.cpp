@@ -26,8 +26,25 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     interLetterLength = dahLength;
     interWordLength = 7 * ditLength;
     
-    iambic = false; // This may be ready to go
-    // Note that if iambic is false and both paddles are closed no tone will be sent
+    // Modes: Mode must be _one_ of singleKey, straightKey, or iambic (note capitalization).
+    // Once you set mode, it sets other variables to mange the tone generation. Don't mess with
+    // _straightKey or _iambic.
+    _mode = singleKey;
+
+    if (_mode == straightKey) { 
+      _straightKey = true; 
+      _iambic = false; 
+    }
+    if (_mode == iambic) { 
+      _straightKey = false; 
+      _iambic = true; 
+    }
+    if (_mode == straightKey) {
+      _straightKey = false;
+      _iambic = false;
+    }
+
+    // Note that if straightKey is false and iambic is false and both paddles are closed no tone will be sent
 
     // Play() setup
     // map dit to TRUE and dah to FALSE for use in play
@@ -84,8 +101,15 @@ void PCOCommon::diDah() {
 }
 
 void PCOCommon::determineSymbol() {
-    if (sendDit && sendDah) {
-      if (iambic) {
+    if (_straightKey) {
+      if (sendDit || sendDah) {
+        tone(_speakerPin, sideToneFreq);
+      }
+      else if (!sendDit && !sendDah) {
+        noTone(_speakerPin);
+      }
+    } else if (sendDit && sendDah) {
+      if (_iambic) {
         diDah();
       }
   } else {

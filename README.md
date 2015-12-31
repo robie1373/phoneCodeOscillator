@@ -1,20 +1,19 @@
 # phoneCodeOscillator
 
-This project is to create a tiny Code Oscillator that can be plugged into the headphone jack of a smartphone. Connect a small paddle to the input jack and the smartphone to the output jack and you should be abble to send code into an app on your phone for practice.
-
-__Important note: I have not had a chance to build this circuit or run the code yet. This is all speculative at this point. I'll update here as I get things tested and proven. Edit: 26 Dec 2015 - The code verifies in Arduino IDE under the appropriate board at least. That's about all I can prove at this point.__
+This project is to create a tiny Code Oscillator / Keyer that can be plugged into the headphone jack of a smartphone. Connect a small paddle, key or cootie to the input jack and the smartphone to the output jack and you should be abble to send code into an app on your phone for practice.
 
 ## Features
 
 * Tiny in size
 * Battery powered (Trinket versions)
 * Charge through micro-USB (Trinket versions)
-* (Maybe) a second output port for monitoring with headphones
-* (Maybe) a pieze buzzer for monitoring
-* Should support Iambic or single paddle mode
-* should support a variety of sending speeds
-* should have configurable sidetone pitch
-* sidetone should be fairly pleasant and smooth
+* A second output port for monitoring with headphones
+* A 8 Ohm speaker or pieze buzzer for monitoring. Switch between headphones or speaker.
+* Supports Iambic or single paddle or straight key modes
+* Supports a variety of sending speeds
+* Has configurable sidetone pitch
+* sidetone is pleasant and smooth
+* Built on an Arduino clone, so the sky is the limit. Suggest a feature!
 
 ## Hardware designs
 
@@ -40,8 +39,8 @@ The Trinket and Trinket Pro versions are very similar. The primary difference is
 
 ## Using
 
-* Plug key into the TRS (3 conductor) headphone jack on the board
-* __It is probably a good idea to put another potentiometer or a 10k Ohm resistor between the outlet and your phone until it can be proven the levels are safe. Fair warning.__ Connect a smartphone and/or headphones to the TRRS (4 conductor) headphone jack(s) on the board
+* Plug key into the TRS (3 conductor) headphone jack on the board. Or whatever method you choose to connect your key/paddle/pie plates.
+* __It is probably a good idea to put another potentiometer or a 10k Ohm resistor between the outlet and your phone until it can be proven the levels are safe. Fair warning.__ Connect a smartphone and/or headphones to the headphone jack(s) on the board. One of the jacks is switched with the speaker, the other is always on. I bet you can figure out which is which. :)
 * Power on board
 * Send code!
 
@@ -53,10 +52,10 @@ In the meantime, this setting is in
     
 You can hardcode your desired settings there.
 
-* hold the dit paddle closed while powering on the board. The reset button on the arduino works well for this.
+--* hold the dit paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dit paddle.
 * Tapping the dit paddle will raise the code speed by 1 wpm. Tapping the dah paddle will lower it by 1 wpm.
-* After 2 seconds without further input the board will move into normal mode.
+* After 2 seconds without further input the board will move into normal mode.--
 
 To configure sidetone __(26 Dec 2015 - Not yet implemented)__
 
@@ -66,20 +65,23 @@ In the meantime, this setting is in
 
 You can hardcode your desired settings there.
 
-* hold the dah paddle closed while powering on the board. The reset button on the arduino works well for this.
+--* hold the dah paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dah paddle.
 * Tapping the dit paddle will raise the sidetone by 20 hz. Tapping the dah paddle will lower it by 20 hz.
-* After 2 seconds without further input the board will move into normal mode.
+* After 2 seconds without further input the board will move into normal mode.--
 
 ## Todo
 
 * finish speed and side-tone configuration
 * make speed and tone setting sticky
+* update board to use switched audio jack to select between monitor headphones and speaker instead of the manual switch.
+* Find a better power switch for the trinket pro
 
 ## Issues or Discussion
 
 Please use the github issues or wiki for that.
 
 ## Announcements
+* 30 December 2015 - V1.1.0 added straight key mode at the suggestion of Mr. k4hax. Circuit has been built, programmed and tested. Everything works as hoped! With respect to the volume into the phone jack, my prototype is fairly quiet. So much so in fact that I will be backing down the resistance in the output circuit. It works but is none too loud.
 
 * 29 December 2015 - v1.0.0 is here! This code has run on a Trinket Pro and demonstrates the basic level of functionality I wanted. Huzzah! Huzzah! Huzzah! I have identified a couple of circuit revisions I want to make for quality of life reasons. Those will come in a later patch.

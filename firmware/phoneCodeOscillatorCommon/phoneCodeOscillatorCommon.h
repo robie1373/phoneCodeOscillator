@@ -21,7 +21,6 @@ class PCOCommon
     int interToneLength;
     int interLetterLength;
     int interWordLength;
-    boolean iambic;
     boolean dit;
     boolean dah;
     boolean sendDit;
@@ -43,6 +42,13 @@ class PCOCommon
     int _speedPin;
     int _tonePin;
     int _speakerPin;
+    boolean _straightKey;
+    boolean _iambic;
+    int _mode;
+    int singleKey = 1;
+    int straightKey = 2;
+    int iambic = 3;
+
 
     void _checkIfConfigure(int tonePin, int speedPin);
     void _changeSideTone(boolean direction);
