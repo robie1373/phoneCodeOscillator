@@ -5,9 +5,9 @@
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
   // Trinket and Trinket Pro only have 1 hardware interrupt
   // so we will use pin change interrupts for them
-int ditPin = 1; // PB1 
-int dahPin = 2; // PB2
-int speakerPin = 0;
+const int ditPin = 1; // PB1 
+const int dahPin = 2; // PB2
+const int speakerPin = 0;
 
   // for pin change interrupts we need the following
 void InitialiseInterruptTrinket(){

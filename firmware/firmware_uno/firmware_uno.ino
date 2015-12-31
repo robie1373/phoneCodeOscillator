@@ -3,11 +3,16 @@
 
   // Key inputs and
   // sound output. Can be a piezo buzzer, speaker (with amp) or 3mm trs or trrs jack
-int ditPin = 2; // Uno 2 has hardware interrupt
-int dahPin = 3; // Uno 3 has hardware interrupt
-int speakerPin = 5; // Digital pin 5 on uno is basic PWM
+const int ditPin = 2; // Uno 2 has hardware interrupt
+const int dahPin = 3; // Uno 3 has hardware interrupt
+const int speakerPin = 5; // Digital pin 5 on uno is basic PWM
 
 PCOCommon pcoCommon(ditPin, dahPin, speakerPin);
+
+/* 
+the attachInterrupt function requires a function to call. Since I don't know how to
+do anonymous functions in arduino here are some named fuctions that just set a variable.
+ */
 
 void setDit() {pcoCommon.sendDit = true;}
 void unsetDit() {pcoCommon.sendDit = false;}

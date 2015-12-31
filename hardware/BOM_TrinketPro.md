@@ -1,5 +1,7 @@
 # BOM for Trinket Pro based builds
 
+## Through-hole version
+
 Count | ID        | Description                     | Source 
 ------|-----------|---------------------------------|--------
 1     | PID: 2010 | Adafruit Pro Trinket - 3V 12MHz | [Adafruit](https://www.adafruit.com/products/2010)
@@ -15,3 +17,7 @@ Count | ID        | Description                     | Source
 1     | BOB-11570 | SparkFun TRRS 3.5mm Jack Breakout | [Sparkfun](https://www.sparkfun.com/products/11570)
 -     | 490-SJ-435107RS | 3.5 MM AUDIO JACK TRRS | [Mouser](http://www.mouser.com/ProductDetail/CUI/SJ-435107RS/?qs=sGAEpiMZZMv0W4pxf2HiVz9SCMkER55fW3%252bb%252bm44Y5oMUWDxmq8xNQ%3d%3d)
 1     | PID: 1609 | Adafruit Perma-Proto Half-sized Breadboard PCB - Single | [Adafruit](https://www.adafruit.com/products/1609)
+
+## Surface mount version
+
+Coming soon.
