@@ -14,22 +14,27 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     _tonePin = dahPin;
     _dahPin = dahPin;
     _speakerPin = speakerPin;
+
       // CW characteristics
     sideToneFreq = 622; // should be a pleasant tone in the range CW ops are used to
     wpm = 20;         // operation word per minute
-      // I don't recommend changing anything below here.
-      // unless you are looking for some Farnsworth action. Then you could
-      // play with _interLetterLength and _interWordLength to achieve that effect.
+    
+    /* Modes: Mode must be _one_ of singleKey, straightKey, or iambic (note capitalization).
+    Once you set mode, it sets other variables to mange the tone generation. Don't mess with
+    _straightKey or _iambic. Only one of the following _mode statements can be uncommented at
+    a time */
+    _mode = singleKey;
+    //_mode = straightKey;
+    //_mode = iambic;
+
+      /* I don't recommend changing anything below here.
+      unless you are looking for some Farnsworth action. Then you could
+      play with _interLetterLength and _interWordLength to achieve that effect. */
     _ditLength = 1200 / wpm;   // this is the length of a dit in milliseconds at desired WPM
     _dahLength = 3 * _ditLength;
     _interToneLength = _ditLength;
     _interLetterLength = _dahLength;
     _interWordLength = 7 * _ditLength;
-    
-    // Modes: Mode must be _one_ of singleKey, straightKey, or iambic (note capitalization).
-    // Once you set mode, it sets other variables to mange the tone generation. Don't mess with
-    // _straightKey or _iambic.
-    _mode = singleKey;
 
     if (_mode == straightKey) { 
       _straightKey = true; 
@@ -53,16 +58,6 @@ PCOCommon::PCOCommon(int ditPin, int dahPin, int speakerPin)
     sendDit;
     sendDah;
   }
-
-void PCOCommon::_checkIfConfigure(int tonePin, int speedPin) {
-  if (digitalRead(tonePin) == LOW) {
-    _changeSideTone(true);
-  }
-
-  if (digitalRead(speedPin) == LOW) {
-    _changeCodeSpeed(true);
-  }
-}
 
 void PCOCommon::_playDit() {
   _now = millis();
@@ -118,7 +113,13 @@ void PCOCommon::determineSymbol() {
 
 
 void PCOCommon::checkIfConfigure() {
-  _checkIfConfigure(_tonePin, _speedPin);
+  if (digitalRead(_tonePin) == LOW) {
+    _changeSideTone(true);
+  }
+
+  if (digitalRead(_speedPin) == LOW) {
+    _changeCodeSpeed(true);
+  }
 }
 
 void PCOCommon::_changeSideTone(boolean direction) {

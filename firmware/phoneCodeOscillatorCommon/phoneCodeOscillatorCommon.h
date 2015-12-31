@@ -31,9 +31,9 @@ class PCOCommon
     boolean _straightKey;
     boolean _iambic;
     int _mode;
-    int singleKey = 1;
-    int straightKey = 2;
-    int iambic = 3;
+    const int singleKey = 1;
+    const int straightKey = 2;
+    const int iambic = 3;
     int _ditLength;
     int _dahLength;
     int _interToneLength;
@@ -49,7 +49,6 @@ class PCOCommon
     void _play(boolean sym);
     void _diDah();
 
-    void _checkIfConfigure(int tonePin, int speedPin);
     void _changeSideTone(boolean direction);
     void _changeCodeSpeed(boolean direction);
 };
