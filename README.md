@@ -52,10 +52,10 @@ In the meantime, this setting is in
     
 You can hardcode your desired settings there.
 
---* hold the dit paddle closed while powering on the board. The reset button on the arduino works well for this.
+* hold the dit paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dit paddle.
 * Tapping the dit paddle will raise the code speed by 1 wpm. Tapping the dah paddle will lower it by 1 wpm.
-* After 2 seconds without further input the board will move into normal mode.--
+* After 2 seconds without further input the board will move into normal mode.~~
 
 To configure sidetone __(26 Dec 2015 - Not yet implemented)__
 
@@ -65,10 +65,10 @@ In the meantime, this setting is in
 
 You can hardcode your desired settings there.
 
---* hold the dah paddle closed while powering on the board. The reset button on the arduino works well for this.
+* hold the dah paddle closed while powering on the board. The reset button on the arduino works well for this.
 * Once you hear the code for "ok", release the dah paddle.
 * Tapping the dit paddle will raise the sidetone by 20 hz. Tapping the dah paddle will lower it by 20 hz.
-* After 2 seconds without further input the board will move into normal mode.--
+* After 2 seconds without further input the board will move into normal mode.
 
 ## Todo
 
