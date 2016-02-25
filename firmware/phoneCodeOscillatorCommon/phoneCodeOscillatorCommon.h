@@ -18,8 +18,10 @@ class PCOCommon
 
     boolean sendDit;
     boolean sendDah;
-    void checkIfConfigure();
+    boolean configRequest;
     void determineSymbol();
+    void changeCodeSpeed();
+    void configMode();
 
   
   private: 
@@ -30,8 +32,9 @@ class PCOCommon
     int _speakerPin;
     boolean _straightKey;
     boolean _iambic;
+    boolean _singlePaddle;
     int _mode;
-    const int singleKey = 1;
+    const int singlePaddle = 1;
     const int straightKey = 2;
     const int iambic = 3;
     int _ditLength;
@@ -48,8 +51,11 @@ class PCOCommon
     void _playDah();
     void _play(boolean sym);
     void _diDah();
-
-    void _changeSideTone(boolean direction);
-    void _changeCodeSpeed(boolean direction);
+    void _changeSideTone();
+    unsigned long _configTimeout;
+    unsigned long _configTimer;
+    int _inputDelay;
+    void _sendCode(boolean menuItem[]);
+    boolean _cM[];
 };
 #endif

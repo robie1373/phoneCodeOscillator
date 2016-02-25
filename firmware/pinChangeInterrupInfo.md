@@ -35,9 +35,11 @@ PCINT14 | PC6 | -   |
 PCINT15 | -   | -   |
 PCINT16 | PD0 | RXD |
 PCINT17 | PD1 | TXD |
-PCINT18 | PD2 | D2  | // Hardware int0
-PCINT19 | PD3 | D3  | // Hardware int1 (Trinket pro doesn't have this pin)
+PCINT18 | PD2 | D2  | // Hardware int0 (Trinket pro doesn't have this pin)
+PCINT19 | PD3 | D3  | // Hardware int1 
 PCINT20 | PD4 | D4  |
+PCINT21 | PD5 | D5  |
+PCINT22 | PD6 | D6  |
 
 ## setting PCICR:
 
